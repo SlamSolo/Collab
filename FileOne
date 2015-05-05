@@ -1,0 +1,227 @@
+package com.example.b00250411.whoanelly;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.view.MotionEvent;
+import android.view.View;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class VTicTacToeView extends View {
+
+    Boolean player1Turn;
+    Paint paint;
+//    int scoreOne = 0;
+//    int scoreTwo = 0;
+    ArrayList<Door> doors;
+    String door1 = "1", door2 = "2", door3 = "3", door4 = "4", door5 = "5", door6 = "6", door7 = "7", door8 = "8", door9 = "9";
+//  bomb = "bomb";
+Random rnd;
+    rnd = new Random();
+    int bombIndex = rnd2.nextInt(doors.size());
+    String bomb = doors.set(bombIndex, "bomb");
+    String loser = "";
+    private String playerOne ="Player 1";
+    private String playerTwo ="Player 2";
+    private String title ="TRAPDOOR";
+    private String score1 = "0";
+    private String score2 = "0";
+    Bitmap background,startBtn, returnBtn;
+
+    public VTicTacToeView(Context context) {
+        super(context);
+        paint = new Paint();
+        paint.setColor(Color.BLUE);
+        paint.setTextSize(45);
+        doors = new ArrayList<>();
+        populateList();
+        player1Turn = rnd.nextBoolean();
+    }
+
+    public String setTxtTurn() {
+        if (loser.equals("")) {
+            if (player1Turn) {
+                return "Player 1's turn";
+            } else {
+                return "Player 2's turn";
+            }
+        } else {
+            invalidate();
+            return loser;
+        }
+    }
+
+    public Door initDoor(int resource, int x, int y) {
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+        startBtn = BitmapFactory.decodeResource(getResources(), R.drawable.startbutton);
+        returnBtn = BitmapFactory.decodeResource(getResources(), R.drawable.returnbutton);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), resource);
+        return new Door(this, bmp, x, y);
+    }
+
+    public void populateList() {
+        doors.add(initDoor(R.drawable.trap, 40, 60));
+        doors.add(initDoor(R.drawable.trap, 280, 60));
+        doors.add(initDoor(R.drawable.trap, 520, 60));
+        doors.add(initDoor(R.drawable.trap, 40, 295));
+        doors.add(initDoor(R.drawable.trap, 280, 295));
+        doors.add(initDoor(R.drawable.trap, 520, 295));
+        doors.add(initDoor(R.drawable.trap, 40, 535));
+        doors.add(initDoor(R.drawable.trap, 280, 535));
+        doors.add(initDoor(R.drawable.trap, 520, 535));
+    }
+
+    public String takeTurn(Door tile) {
+        if (loser.equals("")) {
+            if (player1Turn) {
+//          stuff here for bomb
+                player1Turn = false;
+                return "Two";
+            } else {
+//          stuff here for bomb
+                player1Turn = true;
+                return "One";
+            }
+        } else {
+            return loser;
+        }
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawColor(Color.GRAY);
+        canvas.drawText(setTxtTurn(), 220, 1400, paint);
+        canvas.drawBitmap(background, 0, 0, null);
+        canvas.drawBitmap(startBtn, 270, 730, null);
+        canvas.drawBitmap(returnBtn, 270, 850, null);
+        canvas.drawText(title, 240, 40, paint);
+        canvas.drawText(playerOne, 40, 750, paint);
+        canvas.drawText(playerTwo, 520,750, paint);
+        canvas.drawText(score1, 110, 800, paint);
+        canvas.drawText(score2, 590,800, paint);
+
+        for (Door door : doors) {
+            door.onDraw(canvas);
+        }
+    }
+
+    public void setLoser(String loser) {
+        if (loser.equals("One")) {
+            this.loser = "Player 1 Loses";
+        } else {
+            this.loser = "Player 2 Loses";
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        for (int i = 0; i < doors.size(); i++) {
+            Door door = doors.get(i);
+            if (door.isTapped(event.getX(), event.getY())) {
+                int index = doors.indexOf(door);
+                switch (index) {
+                    case 0:
+                        door1 = takeTurn(door);
+                        if (!door1.equals("bomb")) {
+                            setLoser(door1);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 1:
+                        door2 = takeTurn(door);
+                        if (!door2.equals("bomb")) {
+                            setLoser(door2);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 2:
+                        door3 = takeTurn(door);
+                        if (!door3.equals("bomb")) {
+                            setLoser(door3);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 3:
+                        door4 = takeTurn(door);
+                        if (!door4.equals("bomb")) {
+                            setLoser(door4);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 4:
+                        door5 = takeTurn(door);
+                        if (!door5.equals("bomb")) {
+                            setLoser(door5);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 5:
+                        door6 = takeTurn(door);
+                        if (!door6.equals("bomb")) {
+                            setLoser(door6);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 6:
+                        door7 = takeTurn(door);
+                        if (!door7.equals("bomb")) {
+                            setLoser(door7);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 7:
+                        door8 = takeTurn(door);
+                        if (!door8.equals("bomb")) {
+                            setLoser(door8);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                    case 8:
+                        door9 = takeTurn(door);
+                        if (!door9.equals("bomb")) {
+                            setLoser(door9);
+//                        sfxBad();
+                        }else {
+                            takeTurn(door);
+                        }
+                        setTxtTurn();
+                        break;
+                }
+            }
+        }
+
+        // repaints canvas
+        invalidate();
+
+        return super.onTouchEvent(event);
+    }
+}
