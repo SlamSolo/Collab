@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,15 +16,16 @@ public class VTicTacToeView extends View {
 
     Boolean player1Turn;
     Paint paint;
-//    int scoreOne = 0;
-//    int scoreTwo = 0;
+    int scoreOne = 0;
+    int scoreTwo = 0;
+
     ArrayList<Door> doors;
-    String door1 = "1", door2 = "2", door3 = "3", door4 = "4", door5 = "5", door6 = "6", door7 = "7", door8 = "8", door9 = "9";
-//  bomb = "bomb";
-Random rnd;
-    rnd = new Random();
-    int bombIndex = rnd2.nextInt(doors.size());
-    String bomb = doors.set(bombIndex, "bomb");
+//    String door1, door2, door3, door4, door5, door6, door7, door8, door9;
+//    ArrayList<Strings> strings;
+    String door1 = "bomb", door2 = "no bomb", door3 = "no bomb", door4 = "no bomb", door5 = "no bomb", door6 = "no bomb", door7 = "no bomb", door8 = "no bomb", door9 = "no bomb";
+    Random rnd = new Random();
+    int bombIndex = rnd.nextInt(doors.size());
+
     String loser = "";
     private String playerOne ="Player 1";
     private String playerTwo ="Player 2";
@@ -38,6 +40,8 @@ Random rnd;
         paint.setColor(Color.BLUE);
         paint.setTextSize(45);
         doors = new ArrayList<>();
+//        strings = new ArrayList<>();
+//        doors.set(bombIndex, "bomb");
         populateList();
         player1Turn = rnd.nextBoolean();
     }
@@ -75,7 +79,7 @@ Random rnd;
         doors.add(initDoor(R.drawable.trap, 520, 535));
     }
 
-    public String takeTurn(Door tile) {
+    public String takeTurn(Door door) {
         if (loser.equals("")) {
             if (player1Turn) {
 //          stuff here for bomb
@@ -90,6 +94,41 @@ Random rnd;
             return loser;
         }
     }
+    
+    
+// POTENTIAL REPLACEMENT METHOD    
+
+//    public void changeTurn(Boolean turn) {
+//        if (player1Turn) {
+//            txtTurn.setText("Player Two's Turn");
+//            player1Turn = false;
+//        } else {
+//            txtTurn.setText("Player One's Turn");
+//            player1Turn = true;
+//        }
+//    }
+
+    public void setLoser(String loser) {
+        if (loser.equals("One")) {
+            this.loser = "Player 1 Loses";
+            scoreTwo++;
+            score2 = "" + scoreOne;
+        } else {
+            this.loser = "Player 2 Loses";
+            scoreOne++;
+            score1 = "" + scoreOne;
+        }
+    }
+    
+    
+// POTENTIAL RESET METHOD FOR BOMB POSITION AND DOORS   
+
+//    public void reset() {
+//        for (Door : doors) {
+//        strings = new ArrayList<>();
+//        doors.set(bombIndex, "bomb");
+//        }
+//    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -110,13 +149,6 @@ Random rnd;
         }
     }
 
-    public void setLoser(String loser) {
-        if (loser.equals("One")) {
-            this.loser = "Player 1 Loses";
-        } else {
-            this.loser = "Player 2 Loses";
-        }
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -128,7 +160,8 @@ Random rnd;
                     case 0:
                         door1 = takeTurn(door);
                         if (!door1.equals("bomb")) {
-                            setLoser(door1);
+                            setLoser("one");
+                            Toast.makeText(this, "You LOSE", Toast.LENGTH_LONG).show();
 //                        sfxBad();
                         }else {
                             takeTurn(door);
